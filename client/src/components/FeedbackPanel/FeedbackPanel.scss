@@ -1,0 +1,97 @@
+.feedback-panel {
+  position: fixed;
+  bottom: 20px;
+  right: 20px;
+  width: 400px; /* Увеличена ширина панели */
+  background-color: #333;
+  color: white;
+  padding: 20px;
+  border-radius: 10px;
+  box-shadow: 0 0 10px rgba(0, 0, 0, 0.5);
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+  max-height: 500px; /* Ограничение высоты панели */
+  overflow-y: auto; /* Добавляем прокрутку */
+}
+
+.login-wrapper {
+  display: flex;
+  justify-content: center;
+  margin-bottom: 15px; /* Отступ снизу для кнопки */
+  width: 100%;
+}
+
+.login-button {
+  background-color: #28a745;
+  color: white;
+  padding: 10px;
+  border: none;
+  border-radius: 5px;
+  cursor: pointer;
+  width: 5%;
+  text-align: center;
+}
+
+.login-button:hover {
+  background-color: #218838;
+}
+
+.feedback-container {
+  display: flex;
+  flex-direction: column;
+  width: 100%;
+  margin-top: 10px; /* Отступ для отступа между кнопкой и отзывами */
+}
+
+.feedback-form {
+  width: 100%;
+  display: flex;
+  flex-direction: column;
+}
+
+.feedback-input {
+  width: 100%;
+  padding: 10px;
+  margin-bottom: 10px;
+  background-color: #444;
+  color: white;
+  border: 1px solid #666;
+  border-radius: 5px;
+  resize: none;
+}
+
+.submit-button {
+  background-color: #28a745;
+  color: white;
+  padding: 10px;
+  border: none;
+  border-radius: 5px;
+  cursor: pointer;
+  width: 100%;
+}
+
+.submit-button:hover {
+  background-color: #218838;
+}
+
+.feedback-list {
+  margin-top: 10px;
+  width: 100%;
+  max-height: 350px; /* Ограничение высоты для списка отзывов */
+  overflow-y: auto; /* Добавляем прокрутку */
+}
+
+.feedback-item {
+  background-color: #444;
+  margin-bottom: 10px;
+  padding: 10px;
+  border-radius: 5px;
+  border: 1px solid #666;
+  word-wrap: break-word;
+}
+
+.feedback-item p {
+  margin: 0;
+  word-wrap: break-word; /* Слова не будут выходить за пределы */
+}

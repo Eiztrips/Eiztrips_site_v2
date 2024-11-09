@@ -1,0 +1,139 @@
+/* Общие стили для главного контейнера */
+.main-container {
+    position: absolute;
+    top: 50%;  /* Центрируем по вертикали */
+    left: 50%;  /* Центрируем по горизонтали */
+    transform: translate(-50%, -50%);  /* Сдвигаем на половину панели, чтобы она была точно по центру */
+    width: 80%;  /* Ширина панели */
+    max-width: 500px;  /* Максимальная ширина */
+    background-color: #1c1c1c;  /* Темный фон панели */
+    color: white;
+    padding: 20px;
+    border-radius: 15px;  /* Скругляем углы */
+    text-align: center;
+    box-shadow: 0px 4px 15px rgba(0, 0, 0, 0.5);  /* Тень для панели */
+    font-family: 'Courier New', Courier, monospace;
+    
+    /* Плавное изменение фона для градиента */
+    &::before {
+      content: "";
+      position: absolute;
+      top: -4px;
+      left: -4px;
+      right: -4px;
+      bottom: -4px;
+      background: linear-gradient(
+        45deg,
+        #ff3d00,
+        #ff9100,
+        #ffd600,
+        #76ff03,
+        #00e676,
+        #00b0ff,
+        #d500f9,
+        #ff3d00
+      );
+      background-size: 200% 200%;
+      animation: rainbow 6s infinite linear;
+      z-index: -1;
+      border-radius: 15px;  /* Скругленные углы панели */
+    }
+  
+    /* Анимация для плавного переливания обводки */
+    @keyframes rainbow {
+      0% { background-position: 0% 50%; }
+      50% { background-position: 100% 50%; }
+      100% { background-position: 0% 50%; }
+    }
+  
+    /* Ускорение анимации при наведении */
+    &:hover::before {
+      animation-duration: 1s;
+    }
+  
+    /* Стили для гифки */
+    .gif-container {
+      margin-bottom: 20px;
+  
+      img {
+        width: 100%;
+        max-width: 300px;
+        border-radius: 10px;
+      }
+    }
+    
+    /* Стили для панели center-panel */
+.center-panel {
+    position: relative;
+    background-color: #3c3c3c;  /* Тёмный фон для панели */
+    padding: 20px;
+    border-radius: 12px;  /* Скругляем углы */
+    text-align: center;
+    box-shadow: 0px 4px 12px rgba(0, 0, 0, 0.3);  /* Тень для панели */
+    color: white;
+  
+    /* Стили для анимации */
+    animation: fadeIn 0.5s ease-out;
+    
+    .skills p {
+        font-size: 1rem; /* Уменьшаем размер текста */
+        font-weight: 900;
+        margin: 10px 0;
+      }
+      
+      .skills strong {
+        color: #ff4500; /* Цвет для выделенных слов */
+      }
+
+    /* Стиль заголовка */
+    h2 {
+      font-size: 1.6rem;
+      margin-bottom: 15px;
+      color: #ffffff;  /* Яркий зелёный цвет для заголовков */
+    }
+  
+    /* Стиль для основного текста */
+    p {
+      font-size: 1rem;
+      line-height: 1.5;
+      color: #ccc;
+    }
+  
+    /* Стили для изображения или гифки */
+    .gif-container {
+      margin-top: 20px;
+      img {
+        width: 100%;
+        max-width: 280px;
+        border-radius: 10px;
+        transition: transform 0.3s ease;
+      }
+  
+      img:hover {
+        transform: scale(1.1);  /* Лёгкое увеличение при наведении */
+      }
+    }
+  
+    /* Анимация для плавного появления */
+    @keyframes fadeIn {
+      0% { opacity: 0; }
+      100% { opacity: 1; }
+    }
+  }  
+  
+    /* Стили для текста с навыками */
+    .skills {
+      h2 {
+        font-size: 1.5rem;
+        margin-bottom: 10px;
+        color: #ffffff;
+      }
+  
+      p {
+        font-size: 1.1rem;
+        line-height: 1.6;
+        color: #ccc;
+      }
+    }
+  }
+  

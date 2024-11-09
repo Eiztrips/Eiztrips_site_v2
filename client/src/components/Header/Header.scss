@@ -1,0 +1,100 @@
+/* Общий стиль сайта в темных тонах */
+body {
+    font-family: Arial, sans-serif;
+    margin: 0;
+    padding: 0;
+  }
+  
+  /* Контейнер для хедера с обводкой */
+  .header-container {
+    position: relative;
+    width: 60%;  /* Ширина панели */
+    height: 50px;  /* Высота панели */
+    top: 0;
+    left: 50%;
+    transform: translateX(-50%);  /* Центрируем контейнер */
+    
+    /* Плавное изменение фона */
+    transition: background-color 0.5s ease;
+  }
+  
+  /* Трапециевидный хедер для навигации */
+  .header {
+    position: relative;  /* Панель прижата к верхней части контейнера */
+    top: 0;
+    left: 0;
+    width: 100%;  /* Заполняет весь контейнер */
+    height: 100%;  /* Высота панели */
+    background-color: #1c1c1c;  /* Темный оттенок */
+    clip-path: polygon(0 0, 100% 0, 85% 100%, 15% 100%);  /* Трапециевидная форма */
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    color: #ffffff;
+    font-size: 1.2rem;
+    border-radius: 15px;  /* Скругленные углы */
+    overflow: hidden;
+  }
+
+  .icon-container {
+    display: flex;
+    justify-content: space-between;
+    width: 80%;  /* Ширина контейнера для иконок */
+    justify-content: center;  /* Центрируем иконки по горизонтали */
+  }
+  
+  /* Стили для иконок */
+  .icon-container a {
+    color: #ffffff;
+    font-size: 1.5rem;  /* Размер иконок */
+    margin: 0 20px;  /* Отступы между иконками */
+    transition: transform 0.3s ease, color 0.3s ease;
+  }
+  
+  /* Эффект при наведении на иконку */
+  .icon-container a:hover {
+    transform: scale(1.2);  /* Увеличиваем размер иконки */
+    color: #ba68c8;  /* Цвет иконки при наведении */
+  }
+  
+  /* Элемент для обводки */
+  .header-container::before {
+    content: "";
+    position: absolute;
+    top: -4px;
+    left: -4px;
+    right: -4px;
+    bottom: -4px;
+    background: linear-gradient(
+      45deg,
+      #ff3d00,
+      #ff9100,
+      #ffd600,
+      #76ff03,
+      #00e676,
+      #00b0ff,
+      #d500f9,
+      #ff3d00
+    );
+    background-size: 200% 200%;
+    animation: rainbow 6s infinite linear;
+    z-index: -1;
+    clip-path: polygon(0 0, 100% 0, 85% 100%, 15% 100%);  /* Повторяем форму панели */
+    z-index: -1;  /* Обводка будет находиться за панелью */
+    
+    /* Плавное изменение фона для плавного переливания */
+    animation: rainbow 5s linear infinite;
+  }
+  
+  /* Анимация для перелива обводки */
+  @keyframes rainbow {
+    0% { background-position: 0% 50%; }
+    50% { background-position: 100% 50%; }
+    100% { background-position: 0% 50%; }
+  }
+  
+  /* Ускорение анимации при наведении */
+  .header-container:hover::before {
+    animation-duration: 1s;  /* Ускоряем анимацию при наведении */
+  }
+  
