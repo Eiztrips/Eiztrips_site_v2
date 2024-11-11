@@ -1,7 +1,7 @@
 import axios from 'axios';
 
 // Ваш API ключ для Giphy
-const giphyApiKey = 'dCoEdG7vnF8piPwG5D8kffSfPW1k5Bpa';
+const giphyApiKey = 'iQgxezMg38EAGvABl8qmgZfAxxVzzNCF';
 
 // Функция для получения случайной гифки с котом
 export const fetchRandomCatGif = async (): Promise<string | null> => {

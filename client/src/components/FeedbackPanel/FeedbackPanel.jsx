@@ -1,61 +1,72 @@
 import React, { useState } from 'react';
-import './FeedbackPanel.scss'; // Подключаем стили
+import './FeedbackPanel.scss';
 
 const FeedbackPanel = () => {
-  const [feedback, setFeedback] = useState(''); // Состояние для отзыва
-  const [feedbacks, setFeedbacks] = useState([]); // Состояние для списка отзывов
-  const [isLoggedIn, setIsLoggedIn] = useState(false); // Состояние для отслеживания авторизации
-  const [phoneNumber, setPhoneNumber] = useState(''); // Состояние для номера телефона
-  const [confirmationCode, setConfirmationCode] = useState(''); // Код подтверждения
-  const [isPhoneInputVisible, setIsPhoneInputVisible] = useState(false); // Видимость ввода номера телефона
+  const [feedback, setFeedback] = useState('');
+  const [feedbacks, setFeedbacks] = useState([]);
+  const [isLoggedIn, setIsLoggedIn] = useState(false);
+  const [sessionId, setSessionId] = useState(null); // Store the session ID here
 
+   // Функция для получения значения cookie по его имени
+  function getCookie(name) {
+    const matches = document.cookie.match(new RegExp(
+      `(?:^|; )${name.replace(/([.$?*|{}()[]\\\/+^])/g, '\\$1')}=([^;]*)`
+    ));
+    return matches ? decodeURIComponent(matches[1]) : undefined;
+  }
+
+  // Проверка наличия sessionId в cookies
+  async function checkSessionId() {
+    let sessionId = getCookie('sessionId');
+    console.log('sessionid in cookie: ' + sessionId);
+    if (!sessionId) {
+      // Если ID нет, запрашиваем его у сервера
+      const response = await fetch('http://localhost:5000/api/session');
+      console.log(response.ok, response.status)
+      const data = await response.json();
+      sessionId = data.sessionId;
+
+      console.log('Новый sessionId:', sessionId);
+    } else {
+      console.log('Существующий sessionId из cookies:', sessionId);
+    }
+
+  return sessionId;
+}
+
+  // Обработка изменения ввода отзыва
   const handleInputChange = (event) => {
     if (event.target.value.length <= 200) {
       setFeedback(event.target.value);
     }
   };
 
+  // Отправка отзыва
   const handleSubmit = (event) => {
     event.preventDefault();
     if (feedback.trim()) {
-      // Добавляем новый отзыв в начало списка
       setFeedbacks([feedback, ...feedbacks]);
-      setFeedback(''); // Очищаем поле ввода после отправки
+      setFeedback('');
     }
   };
 
-  const handleLogin = () => {
-    // Показываем поле ввода номера телефона при входе через Telegram
-    setIsPhoneInputVisible(true);
-  };
-
-  const handlePhoneNumberSubmit = async () => {
-    // Отправляем запрос на сервер для отправки кода через Telegram
+  // Функция для получения sessionId с сервера
+  const handleLogin = async () => {
     try {
-      const response = await fetch('http://localhost:5000/api/send-confirmation-code', {
-        method: 'POST',
-        headers: {
-          'Content-Type': 'application/json',
-        },
-        body: JSON.stringify({ phone_number: phoneNumber }),
-      });
-
-      const data = await response.json();
-      if (data.message) {
-        setConfirmationCode(data.code); // Устанавливаем код подтверждения
-        alert('Код подтверждения отправлен!');
+      const response = await fetch('http://localhost:5000/session?telegramId=12345&nickname=testuser');
+      if (response.ok) {
+        const data = await response.json();
+        setSessionId(data.sessionId); // Сохраняем sessionId в состоянии
+        setIsLoggedIn(true); // Устанавливаем состояние, что пользователь вошёл
+      } else {
+        console.error('Не удалось получить sessionId');
       }
     } catch (error) {
-      console.error('Ошибка при отправке номера телефона:', error);
+      console.error('Ошибка при запросе sessionId:', error);
     }
   };
 
-  const handleCodeConfirmation = () => {
-    // Отправляем запрос на сервер для проверки подтверждения
-    alert('Пользователь подтвержден!');
-    setIsLoggedIn(true); // Вход успешен
-    setIsPhoneInputVisible(false); // Скрываем поле ввода номера
-  };
+  checkSessionId();
 
   return (
     <div className="feedback-panel">
@@ -67,44 +78,18 @@ const FeedbackPanel = () => {
         ) : (
           <>
             <a
-              href="https://t.me/eiztripsbot"
+              href={sessionId ? `https://t.me/eiztripsbot?start=${sessionId}` : "https://t.me/eiztripsbot"}
               target="_blank"
               rel="noopener noreferrer"
               className="login-button telegram-button"
+              onClick={handleLogin} // Получаем sessionId перед переходом
             >
               <i className="fa-brands fa-telegram" aria-hidden="true"></i>
             </a>
-            {isPhoneInputVisible && (
-              <div className="phone-input-container">
-                <input
-                  type="text"
-                  placeholder="Введите номер телефона"
-                  value={phoneNumber}
-                  onChange={(e) => setPhoneNumber(e.target.value)}
-                  className="phone-input"
-                />
-                <button onClick={handlePhoneNumberSubmit} className="submit-phone">
-                  Отправить код
-                </button>
-              </div>
-            )}
-            {confirmationCode && (
-              <div className="confirmation-container">
-                <input
-                  type="text"
-                  placeholder="Введите код подтверждения"
-                  onChange={(e) => setConfirmationCode(e.target.value)}
-                  value={confirmationCode}
-                  className="confirmation-input"
-                />
-                <button onClick={handleCodeConfirmation} className="submit-code">
-                  Подтвердить
-                </button>
-              </div>
-            )}
           </>
         )}
       </div>
+
       <div className="feedback-container">
         <h3>Отзывы</h3>
         <form onSubmit={handleSubmit} className="feedback-form">
@@ -115,7 +100,7 @@ const FeedbackPanel = () => {
             maxLength="200"
             rows="4"
             className="feedback-input"
-            disabled={!isLoggedIn} // Отзывы можно оставить только после входа
+            disabled={!isLoggedIn}
           />
           <button type="submit" className="submit-button" disabled={!isLoggedIn}>
             Отправить
